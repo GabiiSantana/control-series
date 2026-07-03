@@ -9,10 +9,13 @@ use Illuminate\Support\Facades\DB;
 
 
 class EloquentSeriesRepository implements SeriesRepository {
-    public function add(SeriesFormRequest $request): Series{
-        return DB::transaction(function () use ($request, &$serie){ // serie por referência
+    public function add(SeriesFormRequest $request, ?string $coverPath): Series{
+        return DB::transaction(function () use ($request, &$serie, $coverPath){ // serie por referência
         // Cria a série
-        $serie = Series::create($request->all());
+        $serie = Series::create([
+            'name' => $request->name,
+            'cover' => $coverPath,
+        ]);
 
         // Monta as temporadas para inserção em lote
         $seasons = [];
@@ -30,7 +33,6 @@ class EloquentSeriesRepository implements SeriesRepository {
         $episodes = [];
 
         foreach ($serie->seasons as $season) {
-
             for ($j = 1; $j <= $request->episodesPerSeason; $j++) {
                 $episodes[] = [
                     'season_id' => $season->id,

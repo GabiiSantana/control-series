@@ -1,8 +1,6 @@
 <x-layout title="Nova Série">
-
     <!-- Envia o formulário para a rota series.store -->
-    <form action="{{ route('series.store') }}" method="post">
-
+    <form action="{{ route('series.store') }}" method="post" enctype="multipart/form-data">
         <!-- Token de proteção CSRF -->
         @csrf
 
@@ -46,7 +44,16 @@
             </div>
 
         </div>
-
+        <div class="row mb-3">
+            <div class="col-12">
+                <label for="Cover" class="form-label">Capa:</label>
+                <input type="file" 
+                        id="id" 
+                        name="cover" 
+                        class="form-control"
+                        accept="image/gif, image/jpeg, image/png">
+            </div>
+        </div>
         <button type="submit" class="btn btn-dark">
             Enviar
         </button>
